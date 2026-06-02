@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/lib/language-context";
@@ -26,7 +27,14 @@ export default function Header() {
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex-shrink-0">
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <Image
+              src="/ppe-logo.jpeg"
+              alt="PPE Logo"
+              width={36}
+              height={36}
+              className="rounded-md object-cover"
+            />
             <h1 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-sans)', letterSpacing: '-0.5px' }}>
               PPE Think Tank
             </h1>
