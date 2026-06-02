@@ -1,10 +1,14 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { getCourses, getBooks } from "@/lib/sheets";
-import BookRow from "@/components/BookRow";
+import Sidebar from "@/components/Sidebar";
+import BookCard from "@/components/BookCard";
 
 export default function ThaiBooksPageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [courses, setCourses] = useState<any[]>([]);
   const [books, setBooks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -23,9 +27,13 @@ export default function ThaiBooksPageContent() {
   }, []);
 
   const program = "thai" as const;
+  const selectedCategory = (searchParams.get("category") || "all") as any;
 
   const programCourses = useMemo(
-    () => courses.filter((c) => c.program === program),
+    () =>
+      courses
+        .filter((c) => c.program === program)
+        .filter((c) => c.name_th && c.name_th.trim()),
     [courses]
   );
 
@@ -35,56 +43,73 @@ export default function ThaiBooksPageContent() {
     [books, programCourses]
   );
 
-  const booksByCoursed = useMemo(
-    () =>
-      programCourses.map((course) => ({
-        course,
-        books: programBooks.filter((b) => b.course_id === course.course_id),
-      })),
-    [programCourses, programBooks]
-  );
+  const filteredBooks = useMemo(() => {
+    let result = programBooks;
+
+    if (selectedCategory !== "all") {
+      const categoryCoursesIds = programCourses
+        .filter((c) => c.category === selectedCategory)
+        .map((c) => c.course_id);
+      result = result.filter((b) => categoryCoursesIds.includes(b.course_id));
+    }
+
+    return result;
+  }, [programBooks, programCourses, selectedCategory]);
+
+  const documentCounts = {
+    all: programBooks.length,
+    economics: programBooks.filter(
+      (b) =>
+        programCourses.find(
+          (c) => c.course_id === b.course_id && c.category === "economics"
+        ) !== undefined
+    ).length,
+    politics: programBooks.filter(
+      (b) =>
+        programCourses.find(
+          (c) => c.course_id === b.course_id && c.category === "politics"
+        ) !== undefined
+    ).length,
+    law: programBooks.filter(
+      (b) =>
+        programCourses.find(
+          (c) => c.course_id === b.course_id && c.category === "law"
+        ) !== undefined
+    ).length,
+  };
 
   if (loading) {
     return <div className="flex-1 p-8">Loading...</div>;
   }
 
   return (
-    <main className="flex-1 p-8 max-w-4xl mx-auto">
-      <h1 className="font-serif text-3xl font-bold text-gray-900 mb-8">
-        หนังสือแนะนำ
-      </h1>
+    <div className="flex flex-1">
+      <Sidebar program={program} documentCounts={documentCounts} courses={programCourses} />
 
-      <div className="space-y-8">
-        {booksByCoursed.map(({ course, books: courseBooks }) => (
-          courseBooks.length > 0 && (
-            <div
-              key={course.course_id}
-              className="bg-white rounded-lg border border-gray-200 overflow-hidden"
-            >
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                <h2 className="font-serif font-semibold text-gray-900">
-                  {course.name_th}
-                </h2>
-              </div>
-              <div>
-                {courseBooks.map((book: any) => (
-                  <BookRow
-                    key={`${course.course_id}-${book.title}`}
-                    book={book}
-                    courseName={course.name_th}
-                  />
-                ))}
-              </div>
-            </div>
-          )
-        ))}
-      </div>
+      <main className="flex-1 p-4 md:p-8">
+        <h1 className="font-serif text-2xl md:text-3xl font-bold text-gray-900 mb-8">
+          หนังสือแนะนำ
+        </h1>
 
-      {programBooks.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500">ไม่มีหนังสือในปัจจุบัน</p>
-        </div>
-      )}
-    </main>
+        {filteredBooks.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500">ไม่มีหนังสือในหมวดนี้</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {filteredBooks.map((book: any) => {
+              const course = programCourses.find((c) => c.course_id === book.course_id);
+              return (
+                <BookCard
+                  key={`${book.course_id}-${book.title}`}
+                  book={book}
+                  courseName={course?.name_th || "Unknown Course"}
+                />
+              );
+            })}
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
