@@ -37,11 +37,13 @@ const categoryLabelsMap = {
     economics: "เศรษฐศาสตร์",
     politics: "รัฐศาสตร์",
     law: "นิติศาสตร์",
+    philosophy: "ปรัชญา",
   },
   en: {
     economics: "Economics",
     politics: "Politics",
     law: "Law",
+    philosophy: "Philosophy",
   },
 };
 

@@ -167,6 +167,12 @@ export default function ThaiPageContent() {
           (c) => c.course_id === d.course_id && c.category === "law"
         ) !== undefined
     ).length,
+    philosophy: programDocuments.filter(
+      (d) =>
+        programCourses.find(
+          (c) => c.course_id === d.course_id && c.category === "philosophy"
+        ) !== undefined
+    ).length,
   };
 
   console.log("📈 Document counts:", documentCounts);

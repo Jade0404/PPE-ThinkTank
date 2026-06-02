@@ -67,7 +67,7 @@ export async function getCourses(): Promise<Course[]> {
         }
 
         // Map category: derive from category_th/category_en
-        let category: "economics" | "politics" | "law" = "economics";
+        let category: "economics" | "politics" | "law" | "philosophy" = "economics";
         const catTh = (row.category_th || "").toLowerCase();
         const catEn = (row.category_en || "").toLowerCase();
 
@@ -75,6 +75,8 @@ export async function getCourses(): Promise<Course[]> {
           category = "politics";
         } else if (catTh.includes("นิติศาสตร์") || catEn.includes("law")) {
           category = "law";
+        } else if (catTh.includes("ปรัชญา") || catEn.includes("philosophy")) {
+          category = "philosophy";
         }
 
         const course = {

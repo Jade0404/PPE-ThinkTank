@@ -76,6 +76,12 @@ export default function ThaiBooksPageContent() {
           (c) => c.course_id === b.course_id && c.category === "law"
         ) !== undefined
     ).length,
+    philosophy: programBooks.filter(
+      (b) =>
+        programCourses.find(
+          (c) => c.course_id === b.course_id && c.category === "philosophy"
+        ) !== undefined
+    ).length,
   };
 
   if (loading) {
