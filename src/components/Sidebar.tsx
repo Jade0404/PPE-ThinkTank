@@ -83,7 +83,7 @@ function FilterContent({
               </Badge>
             </div>
           </button>
-          {uniqueCategories.map((category) => (
+          {uniqueCategories.map((category: string) => (
             <button
               key={category}
               onClick={() => updateParams("category", category)}
