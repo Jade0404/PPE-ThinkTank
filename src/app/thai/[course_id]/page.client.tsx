@@ -48,7 +48,7 @@ export default function ThaiCoursePageContent() {
 
   return (
     <div className="flex-1">
-      <div className="p-8">
+      <div className="p-4 md:p-8">
         <button
           onClick={() => router.back()}
           className="mb-6 text-red-700 hover:text-red-800 font-medium text-sm flex items-center gap-2"
@@ -56,7 +56,7 @@ export default function ThaiCoursePageContent() {
           ← ย้อนกลับ
         </button>
 
-        <h1 className="font-serif font-bold text-3xl text-gray-900 mb-8">
+        <h1 className="font-serif font-bold text-2xl md:text-3xl text-gray-900 mb-8">
           {course.name_th || course.name_en || "Unknown Course"}
         </h1>
 
@@ -65,7 +65,7 @@ export default function ThaiCoursePageContent() {
             <p className="text-gray-500">ไม่มีเอกสารสำหรับวิชานี้</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {documents.map((doc, index) => (
               <DocumentCard
                 key={`${courseId}-${doc.doc_id}-${index}`}

@@ -1,8 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Category, DocumentType, Course } from "@/lib/types";
 import { useLanguage } from "@/lib/language-context";
 
@@ -38,6 +45,155 @@ const categoryLabelsMap = {
   },
 };
 
+function FilterContent({
+  program,
+  searchParams,
+  displayLang,
+  typeLabels,
+  categoryLabels,
+  uniqueCategories,
+  documentCounts,
+  selectedCategory,
+  selectedTypes,
+  selectedYears,
+  selectedTerms,
+  updateParams,
+  getCategoryLabel,
+  getSectionTitle,
+}: any) {
+  return (
+    <div className="space-y-8">
+      <div>
+        <h3 className="font-serif font-semibold text-gray-900 mb-4">
+          {getSectionTitle("category")}
+        </h3>
+        <div className="space-y-2">
+          <button
+            onClick={() => updateParams("category", "all")}
+            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+              selectedCategory === "all"
+                ? "bg-red-50 text-red-700 font-medium"
+                : "text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <span>{getSectionTitle("all")}</span>
+              <Badge variant="secondary" className="ml-2">
+                {documentCounts.all}
+              </Badge>
+            </div>
+          </button>
+          {uniqueCategories.map((category) => (
+            <button
+              key={category}
+              onClick={() => updateParams("category", category)}
+              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                selectedCategory === category
+                  ? "bg-red-50 text-red-700 font-medium"
+                  : "text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span>{getCategoryLabel(category)}</span>
+                <Badge variant="secondary" className="ml-2">
+                  {documentCounts[category as Category] || 0}
+                </Badge>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <Separator />
+
+      <div>
+        <h3 className="font-serif font-semibold text-gray-900 mb-4">
+          {getSectionTitle("type")}
+        </h3>
+        <div className="space-y-2">
+          {(["sheet", "summary", "exam"] as DocumentType[]).map((type) => (
+            <button
+              key={type}
+              onClick={() => updateParams("type", type, true)}
+              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center ${
+                selectedTypes.includes(type)
+                  ? "bg-red-50 text-red-700 font-medium"
+                  : "text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedTypes.includes(type)}
+                readOnly
+                className="mr-2 w-4 h-4"
+              />
+              {typeLabels[type]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <Separator />
+
+      <div>
+        <h3 className="font-serif font-semibold text-gray-900 mb-4">
+          {getSectionTitle("year")}
+        </h3>
+        <div className="space-y-2">
+          {[1, 2, 3, 4].map((year) => (
+            <button
+              key={`year-${year}`}
+              onClick={() => updateParams("year", year.toString(), true)}
+              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center ${
+                selectedYears.includes(year.toString())
+                  ? "bg-red-50 text-red-700 font-medium"
+                  : "text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedYears.includes(year.toString())}
+                readOnly
+                className="mr-2 w-4 h-4"
+              />
+              {displayLang === "en" ? `Year ${year}` : `ปี ${year}`}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <Separator />
+
+      <div>
+        <h3 className="font-serif font-semibold text-gray-900 mb-4">
+          {getSectionTitle("term")}
+        </h3>
+        <div className="space-y-2">
+          {[1, 2].map((term) => (
+            <button
+              key={`term-${term}`}
+              onClick={() => updateParams("term", term.toString(), true)}
+              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center ${
+                selectedTerms.includes(term.toString())
+                  ? "bg-red-50 text-red-700 font-medium"
+                  : "text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedTerms.includes(term.toString())}
+                readOnly
+                className="mr-2 w-4 h-4"
+              />
+              {displayLang === "en" ? `Term ${term}` : `เทอม ${term}`}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Sidebar({
   program,
   documentCounts,
@@ -46,6 +202,7 @@ export default function Sidebar({
   const router = useRouter();
   const searchParams = useSearchParams();
   const { language } = useLanguage();
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   // For inter program, always use English; for thai, use the language setting
   const displayLang = program === "inter" ? "en" : (language as "th" | "en");
@@ -111,136 +268,59 @@ export default function Sidebar({
   };
 
   return (
-    <aside className="w-48 bg-white p-6 border-r border-gray-200">
-      <div className="space-y-8">
-        <div>
-          <h3 className="font-serif font-semibold text-gray-900 mb-4">
-            {getSectionTitle("category")}
-          </h3>
-          <div className="space-y-2">
-            <button
-              onClick={() => updateParams("category", "all")}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                selectedCategory === "all"
-                  ? "bg-red-50 text-red-700 font-medium"
-                  : "text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <span>{getSectionTitle("all")}</span>
-                <Badge variant="secondary" className="ml-2">
-                  {documentCounts.all}
-                </Badge>
-              </div>
-            </button>
-            {uniqueCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => updateParams("category", category)}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                  selectedCategory === category
-                    ? "bg-red-50 text-red-700 font-medium"
-                    : "text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <span>{getCategoryLabel(category)}</span>
-                  <Badge variant="secondary" className="ml-2">
-                    {documentCounts[category as Category] || 0}
-                  </Badge>
-                </div>
-              </button>
-            ))}
+    <>
+      <aside className="hidden md:block w-48 bg-white p-6 border-r border-gray-200">
+        <FilterContent
+          program={program}
+          searchParams={searchParams}
+          displayLang={displayLang}
+          typeLabels={typeLabels}
+          categoryLabels={categoryLabels}
+          uniqueCategories={uniqueCategories}
+          documentCounts={documentCounts}
+          selectedCategory={selectedCategory}
+          selectedTypes={selectedTypes}
+          selectedYears={selectedYears}
+          selectedTerms={selectedTerms}
+          updateParams={updateParams}
+          getCategoryLabel={getCategoryLabel}
+          getSectionTitle={getSectionTitle}
+        />
+      </aside>
+
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+        <button
+          onClick={() => setSheetOpen(true)}
+          className="md:hidden flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+        >
+          🔍 {displayLang === "en" ? "Filters" : "ตัวกรอง"}
+        </button>
+        <SheetContent side="left" className="w-80 overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>
+              {displayLang === "en" ? "Filters" : "ตัวกรอง"}
+            </SheetTitle>
+          </SheetHeader>
+          <div className="mt-6 pr-4">
+            <FilterContent
+              program={program}
+              searchParams={searchParams}
+              displayLang={displayLang}
+              typeLabels={typeLabels}
+              categoryLabels={categoryLabels}
+              uniqueCategories={uniqueCategories}
+              documentCounts={documentCounts}
+              selectedCategory={selectedCategory}
+              selectedTypes={selectedTypes}
+              selectedYears={selectedYears}
+              selectedTerms={selectedTerms}
+              updateParams={updateParams}
+              getCategoryLabel={getCategoryLabel}
+              getSectionTitle={getSectionTitle}
+            />
           </div>
-        </div>
-
-        <Separator />
-
-        <div>
-          <h3 className="font-serif font-semibold text-gray-900 mb-4">
-            {getSectionTitle("type")}
-          </h3>
-          <div className="space-y-2">
-            {(["sheet", "summary", "exam"] as DocumentType[]).map((type) => (
-              <button
-                key={type}
-                onClick={() => updateParams("type", type, true)}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center ${
-                  selectedTypes.includes(type)
-                    ? "bg-red-50 text-red-700 font-medium"
-                    : "text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedTypes.includes(type)}
-                  readOnly
-                  className="mr-2 w-4 h-4"
-                />
-                {typeLabels[type]}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <Separator />
-
-        <div>
-          <h3 className="font-serif font-semibold text-gray-900 mb-4">
-            {getSectionTitle("year")}
-          </h3>
-          <div className="space-y-2">
-            {[1, 2, 3, 4].map((year) => (
-              <button
-                key={`year-${year}`}
-                onClick={() => updateParams("year", year.toString(), true)}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center ${
-                  selectedYears.includes(year.toString())
-                    ? "bg-red-50 text-red-700 font-medium"
-                    : "text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedYears.includes(year.toString())}
-                  readOnly
-                  className="mr-2 w-4 h-4"
-                />
-                {displayLang === "en" ? `Year ${year}` : `ปี ${year}`}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <Separator />
-
-        <div>
-          <h3 className="font-serif font-semibold text-gray-900 mb-4">
-            {getSectionTitle("term")}
-          </h3>
-          <div className="space-y-2">
-            {[1, 2].map((term) => (
-              <button
-                key={`term-${term}`}
-                onClick={() => updateParams("term", term.toString(), true)}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex items-center ${
-                  selectedTerms.includes(term.toString())
-                    ? "bg-red-50 text-red-700 font-medium"
-                    : "text-gray-700 hover:bg-gray-50"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedTerms.includes(term.toString())}
-                  readOnly
-                  className="mr-2 w-4 h-4"
-                />
-                {displayLang === "en" ? `Term ${term}` : `เทอม ${term}`}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </aside>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }

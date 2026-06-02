@@ -179,7 +179,7 @@ export default function ThaiPageContent() {
     <div className="flex flex-1">
       <Sidebar program={program} documentCounts={documentCounts} courses={programCourses} />
 
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 md:p-8">
         <SearchBar onSearch={setSearchQuery} />
 
         {selectedTypes.length > 0 && (
@@ -221,7 +221,7 @@ export default function ThaiPageContent() {
                     <h1 className="font-serif font-bold text-2xl text-gray-900 mb-6">
                       {categoryLabels[category as keyof typeof categoryLabels] || category}
                     </h1>
-                    <div className="grid grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                       {categoryCourses.map((course) => {
                         const courseDocCount = programDocuments.filter(
                           (d) => d.course_id === course.course_id
@@ -230,7 +230,7 @@ export default function ThaiPageContent() {
                           <button
                             key={course.course_id}
                             onClick={() => router.push(`/thai/${course.course_id}`)}
-                            className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow hover:border-red-700 text-left"
+                            className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 hover:shadow-lg transition-shadow hover:border-red-700 text-left"
                           >
                             <h3 className="font-serif font-semibold text-lg text-gray-900 mb-3">
                               {course.name_th || course.name_en || "Unknown Course"}
