@@ -261,7 +261,11 @@ export default function Sidebar({
         params.append(paramName, value);
       }
     } else {
-      params.set(paramName, value);
+      if (value === "all") {
+        params.delete(paramName);
+      } else {
+        params.set(paramName, value);
+      }
     }
 
     router.push(`/${program}?${params.toString()}`);
