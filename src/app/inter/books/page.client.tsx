@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { getCourses, getBooks } from "@/lib/sheets";
-import Sidebar from "@/components/Sidebar";
+import BooksSidebar from "@/components/BooksSidebar";
 import BookCard from "@/components/BookCard";
 
 export default function InterBooksPageContent() {
@@ -84,7 +84,7 @@ export default function InterBooksPageContent() {
 
   return (
     <div className="flex flex-1">
-      <Sidebar program={program} documentCounts={documentCounts} courses={programCourses} />
+      <BooksSidebar program={program} documentCounts={documentCounts} courses={programCourses} />
 
       <main className="flex-1 p-4 md:p-8">
         <h1 className="font-serif text-2xl md:text-3xl font-bold text-gray-900 mb-8">
