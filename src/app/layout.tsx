@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Inter, Plus_Jakarta_Sans, Sarabun } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/lib/language-context";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -50,6 +51,7 @@ export default function RootLayout({
         <LanguageProvider>
           <Header />
           {children}
+          <Footer />
         </LanguageProvider>
       </body>
     </html>
