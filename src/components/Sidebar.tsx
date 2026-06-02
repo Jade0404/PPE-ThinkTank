@@ -297,9 +297,9 @@ export default function Sidebar({
           onClick={() => setSheetOpen(true)}
           className="md:hidden flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
         >
-          🔍 {displayLang === "en" ? "Filters" : "ตัวกรอง"}
+          ⚙️ {displayLang === "en" ? "Filters" : "ตัวกรอง"}
         </button>
-        <SheetContent side="left" className="w-80 overflow-y-auto">
+        <SheetContent side="bottom" className="max-h-[80vh] overflow-y-auto">
           <SheetHeader>
             <SheetTitle>
               {displayLang === "en" ? "Filters" : "ตัวกรอง"}
