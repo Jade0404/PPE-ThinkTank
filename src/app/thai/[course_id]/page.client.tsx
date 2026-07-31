@@ -18,7 +18,7 @@ export default function ThaiCoursePageContent() {
     Promise.all([getCourses(), getDocuments()])
       .then(([courses, docs]) => {
         const foundCourse = courses.find(
-          (c) => c.course_id === courseId && c.program === "thai"
+          (c) => c.course_id === courseId && c.program?.toLowerCase().trim() === "thai"
         );
         setCourse(foundCourse);
 

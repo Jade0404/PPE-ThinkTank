@@ -18,7 +18,7 @@ export default function InterCoursePageContent() {
     Promise.all([getCourses(), getDocuments()])
       .then(([courses, docs]) => {
         const foundCourse = courses.find(
-          (c) => c.course_id === courseId && c.program === "inter"
+          (c) => c.course_id === courseId && c.program?.toLowerCase().trim() === "inter"
         );
         setCourse(foundCourse);
 

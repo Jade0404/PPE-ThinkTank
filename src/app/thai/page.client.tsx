@@ -42,7 +42,7 @@ export default function ThaiPageContent() {
   const programCourses = useMemo(
     () =>
       courses
-        .filter((c) => c.program === program)
+        .filter((c) => c.program?.toLowerCase().trim() === program)
         .filter((c) => c.name_th && c.name_th.trim()),
     [courses]
   );

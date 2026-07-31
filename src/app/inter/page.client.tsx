@@ -42,7 +42,7 @@ export default function InterPageContent() {
   const programCourses = useMemo(
     () =>
       courses
-        .filter((c) => c.program === program)
+        .filter((c) => c.program?.toLowerCase().trim() === program)
         .filter((c) => c.name_en && c.name_en.trim()),
     [courses]
   );
