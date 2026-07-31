@@ -132,33 +132,19 @@ export default function InterPageContent() {
     return baseResults;
   }, [searchQuery, fuse, coursesWithFilteredDocs]);
 
-  const documentCounts = {
-    all: programDocuments.length,
-    economics: programDocuments.filter(
+  // Build documentCounts dynamically from all unique categories in data
+  const documentCounts: Record<string, number> = { all: programDocuments.length };
+  const uniqueCategoriesInData = Array.from(
+    new Set(programCourses.map((c) => c.category).filter(Boolean))
+  );
+  uniqueCategoriesInData.forEach((category) => {
+    documentCounts[category] = programDocuments.filter(
       (d) =>
         programCourses.find(
-          (c) => c.course_id === d.course_id && c.category === "economics"
+          (c) => c.course_id === d.course_id && c.category === category
         ) !== undefined
-    ).length,
-    politics: programDocuments.filter(
-      (d) =>
-        programCourses.find(
-          (c) => c.course_id === d.course_id && c.category === "politics"
-        ) !== undefined
-    ).length,
-    law: programDocuments.filter(
-      (d) =>
-        programCourses.find(
-          (c) => c.course_id === d.course_id && c.category === "law"
-        ) !== undefined
-    ).length,
-    philosophy: programDocuments.filter(
-      (d) =>
-        programCourses.find(
-          (c) => c.course_id === d.course_id && c.category === "philosophy"
-        ) !== undefined
-    ).length,
-  };
+    ).length;
+  });
 
   if (loading) {
     return <div className="flex-1 p-8">Loading...</div>;
@@ -195,20 +181,20 @@ export default function InterPageContent() {
             )
               .sort()
               .map((category) => {
-                const categoryLabels: Record<string, string> = {
-                  economics: "Economics",
-                  politics: "Politics",
-                  law: "Law",
-                };
-
                 const categoryCourses = searchResults.filter(
                   (c) => c.category === category
                 );
 
+                // Get category label from courses data
+                const courseInCategory = programCourses.find(
+                  (c) => c.category === category
+                );
+                const categoryLabel = courseInCategory?.category_en || category;
+
                 return (
                   <div key={category}>
                     <h1 className="font-sans font-bold text-2xl text-gray-900 mb-6">
-                      {categoryLabels[category as keyof typeof categoryLabels] || category}
+                      {categoryLabel}
                     </h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                       {categoryCourses.map((course) => {

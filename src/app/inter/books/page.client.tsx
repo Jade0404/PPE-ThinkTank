@@ -56,33 +56,19 @@ export default function InterBooksPageContent() {
     return result;
   }, [programBooks, programCourses, selectedCategory]);
 
-  const documentCounts = {
-    all: programBooks.length,
-    economics: programBooks.filter(
+  // Build documentCounts dynamically from all unique categories in data
+  const documentCounts: Record<string, number> = { all: programBooks.length };
+  const uniqueCategoriesInData = Array.from(
+    new Set(programCourses.map((c) => c.category).filter(Boolean))
+  );
+  uniqueCategoriesInData.forEach((category) => {
+    documentCounts[category] = programBooks.filter(
       (b) =>
         programCourses.find(
-          (c) => c.course_id === b.course_id && c.category === "economics"
+          (c) => c.course_id === b.course_id && c.category === category
         ) !== undefined
-    ).length,
-    politics: programBooks.filter(
-      (b) =>
-        programCourses.find(
-          (c) => c.course_id === b.course_id && c.category === "politics"
-        ) !== undefined
-    ).length,
-    law: programBooks.filter(
-      (b) =>
-        programCourses.find(
-          (c) => c.course_id === b.course_id && c.category === "law"
-        ) !== undefined
-    ).length,
-    philosophy: programBooks.filter(
-      (b) =>
-        programCourses.find(
-          (c) => c.course_id === b.course_id && c.category === "philosophy"
-        ) !== undefined
-    ).length,
-  };
+    ).length;
+  });
 
   if (loading) {
     return <div className="flex-1 p-8">Loading...</div>;
