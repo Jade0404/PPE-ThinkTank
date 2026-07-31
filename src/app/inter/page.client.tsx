@@ -221,7 +221,7 @@ export default function InterPageContent() {
                             onClick={() => router.push(`/inter/${course.course_id}`)}
                             className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 hover:shadow-lg transition-shadow hover:border-red-700 text-left"
                           >
-                            <h3 className="font-serif font-semibold text-lg text-gray-900 mb-3">
+                            <h3 className="font-sans font-semibold text-lg text-gray-900 mb-3">
                               {course.name_en || course.name_th || "Unknown Course"}
                             </h3>
                             <p className="text-sm text-gray-600">
