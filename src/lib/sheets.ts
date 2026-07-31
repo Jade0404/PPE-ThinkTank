@@ -131,9 +131,9 @@ export async function getDocuments(): Promise<Document[]> {
       .map((row) => ({
         doc_id: row.doc_id,
         course_id: row.course_id,
-        type: row.type as "sheet" | "summary" | "exam",
-        year: parseInt(row.year, 10) as 1 | 2 | 3 | 4,
-        term: parseInt(row.term, 10) as 1 | 2,
+        type: (row.type?.trim().toLowerCase() || "") as "sheet" | "summary" | "exam",
+        year: parseInt((row.year || "").toString().trim(), 10) as 1 | 2 | 3 | 4,
+        term: parseInt((row.term || "").toString().trim(), 10) as 1 | 2,
         title: row.title,
         drive_id: row.drive_id,
       }));

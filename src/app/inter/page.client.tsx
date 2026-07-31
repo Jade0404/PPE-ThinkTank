@@ -69,7 +69,10 @@ export default function InterPageContent() {
     }
 
     if (selectedTypes.length > 0) {
-      result = result.filter((d) => selectedTypes.includes(d.type));
+      const normalizedTypes = selectedTypes.map((t) => t.trim().toLowerCase());
+      result = result.filter((d) =>
+        normalizedTypes.includes((d.type || "").trim().toLowerCase())
+      );
     }
 
     if (selectedYears.length > 0) {
