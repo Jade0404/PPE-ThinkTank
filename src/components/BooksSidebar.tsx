@@ -86,7 +86,7 @@ export default function BooksSidebar({
   const FilterContent = () => (
     <div className="space-y-6">
       <div>
-        <h3 className="font-serif font-semibold text-gray-900 mb-4">
+        <h3 className="font-sans font-semibold text-gray-900 mb-4">
           {getSectionTitle("category")}
         </h3>
         <div className="space-y-2">

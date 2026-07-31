@@ -19,7 +19,7 @@ export default function BookRow({ book, courseName }: BookRowProps) {
       />
 
       <div className="flex-1 min-w-0">
-        <p className="font-serif font-semibold text-gray-900 truncate">
+        <p className="font-sans font-semibold text-gray-900 truncate">
           {book.title}
         </p>
         <p className="text-sm text-gray-600 truncate">{book.author}</p>

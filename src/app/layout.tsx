@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Inter, Plus_Jakarta_Sans, Sarabun } from "next/font/google";
+import { Geist_Mono, IBM_Plex_Sans_Thai, Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/lib/language-context";
 
-const plusJakarta = Plus_Jakarta_Sans({
+const ibmPlexThai = IBM_Plex_Sans_Thai({
   variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["500", "600"],
+  subsets: ["thai"],
+  weight: ["400", "500", "600"],
 });
 
 const inter = Inter({
@@ -17,10 +17,10 @@ const inter = Inter({
   weight: ["400", "500"],
 });
 
-const sarabun = Sarabun({
-  variable: "--font-thai",
-  subsets: ["thai"],
-  weight: ["400", "500"],
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-heading",
+  subsets: ["latin"],
+  weight: ["500", "600"],
 });
 
 const geistMono = Geist_Mono({
@@ -45,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="th"
-      className={`${plusJakarta.variable} ${inter.variable} ${sarabun.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${ibmPlexThai.variable} ${inter.variable} ${plusJakarta.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white">
         <LanguageProvider>

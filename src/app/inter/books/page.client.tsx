@@ -93,7 +93,7 @@ export default function InterBooksPageContent() {
       <BooksSidebar program={program} documentCounts={documentCounts} courses={programCourses} />
 
       <main className="flex-1 p-4 md:p-8">
-        <h1 className="font-serif text-2xl md:text-3xl font-bold text-gray-900 mb-8">
+        <h1 className="font-sans text-2xl md:text-3xl font-bold text-gray-900 mb-8">
           Recommended Books
         </h1>
 

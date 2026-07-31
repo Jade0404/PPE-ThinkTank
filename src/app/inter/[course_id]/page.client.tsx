@@ -56,7 +56,7 @@ export default function InterCoursePageContent() {
           ← Back
         </button>
 
-        <h1 className="font-serif font-bold text-2xl md:text-3xl text-gray-900 mb-8">
+        <h1 className="font-sans font-bold text-2xl md:text-3xl text-gray-900 mb-8">
           {course.name_en || course.name_th || "Unknown Course"}
         </h1>
 

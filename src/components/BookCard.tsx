@@ -25,7 +25,7 @@ export default function BookCard({ book, courseName }: BookCardProps) {
         )}
       </div>
 
-      <p className="font-serif font-semibold text-gray-900 mb-1 line-clamp-2">
+      <p className="font-sans font-semibold text-gray-900 mb-1 line-clamp-2">
         {book.title}
       </p>
       <p className="text-sm text-gray-600 mb-3 line-clamp-1">{book.author}</p>

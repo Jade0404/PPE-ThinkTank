@@ -66,7 +66,7 @@ function FilterContent({
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="font-serif font-semibold text-gray-900 mb-4">
+        <h3 className="font-sans font-semibold text-gray-900 mb-4">
           {getSectionTitle("category")}
         </h3>
         <div className="space-y-2">
@@ -109,7 +109,7 @@ function FilterContent({
       <Separator />
 
       <div>
-        <h3 className="font-serif font-semibold text-gray-900 mb-4">
+        <h3 className="font-sans font-semibold text-gray-900 mb-4">
           {getSectionTitle("type")}
         </h3>
         <div className="space-y-2">
@@ -138,7 +138,7 @@ function FilterContent({
       <Separator />
 
       <div>
-        <h3 className="font-serif font-semibold text-gray-900 mb-4">
+        <h3 className="font-sans font-semibold text-gray-900 mb-4">
           {getSectionTitle("year")}
         </h3>
         <div className="space-y-2">
@@ -167,7 +167,7 @@ function FilterContent({
       <Separator />
 
       <div>
-        <h3 className="font-serif font-semibold text-gray-900 mb-4">
+        <h3 className="font-sans font-semibold text-gray-900 mb-4">
           {getSectionTitle("term")}
         </h3>
         <div className="space-y-2">

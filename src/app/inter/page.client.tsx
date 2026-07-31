@@ -207,7 +207,7 @@ export default function InterPageContent() {
 
                 return (
                   <div key={category}>
-                    <h1 className="font-serif font-bold text-2xl text-gray-900 mb-6">
+                    <h1 className="font-sans font-bold text-2xl text-gray-900 mb-6">
                       {categoryLabels[category as keyof typeof categoryLabels] || category}
                     </h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">

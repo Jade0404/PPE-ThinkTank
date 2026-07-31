@@ -41,7 +41,7 @@ export default function DocumentCard({
           </span>
         </div>
 
-        <h3 className="font-serif font-semibold text-gray-900 mb-2 line-clamp-2">
+        <h3 className="font-sans font-semibold text-gray-900 mb-2 line-clamp-2">
           {document.title}
         </h3>
 
