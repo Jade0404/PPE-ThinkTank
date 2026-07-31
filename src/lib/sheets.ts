@@ -27,7 +27,7 @@ async function fetchCSV<T>(url: string): Promise<T[]> {
     return new Promise((resolve, reject) => {
       Papa.parse(csv, {
         header: true,
-        skipEmptyLines: true,
+        skipEmptyLines: false,
         complete: (results) => {
           console.log("✓ CSV parsed successfully, rows:", results.data.length);
           if (results.data.length > 0) {

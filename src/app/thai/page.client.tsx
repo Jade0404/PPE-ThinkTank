@@ -59,6 +59,11 @@ export default function ThaiPageContent() {
   let filteredDocuments = useMemo(() => {
     let result = programDocuments;
 
+    console.log("🔍 Thai filteredDocuments useMemo:");
+    console.log("  selectedTypes:", selectedTypes);
+    console.log("  sample d.type:", programDocuments[0]?.type);
+    console.log("  filtered count so far:", result.length);
+
     if (selectedCategory !== "all") {
       const categoryCoursesIds = programCourses
         .filter((c) => c.category === selectedCategory)
@@ -87,6 +92,7 @@ export default function ThaiPageContent() {
       );
     }
 
+    console.log("  filtered count:", result.length);
     return result;
   }, [
     programDocuments,
