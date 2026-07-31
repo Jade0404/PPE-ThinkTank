@@ -32,27 +32,12 @@ const typeLabelsMap = {
   },
 };
 
-const categoryLabelsMap = {
-  th: {
-    economics: "เศรษฐศาสตร์",
-    politics: "รัฐศาสตร์",
-    law: "นิติศาสตร์",
-    philosophy: "ปรัชญา",
-  },
-  en: {
-    economics: "Economics",
-    politics: "Politics",
-    law: "Law",
-    philosophy: "Philosophy",
-  },
-};
 
 function FilterContent({
   program,
   searchParams,
   displayLang,
   typeLabels,
-  categoryLabels,
   uniqueCategories,
   documentCounts,
   selectedCategory,
@@ -215,14 +200,19 @@ export default function Sidebar({
   const selectedTerms = searchParams.getAll("term");
 
   const typeLabels = typeLabelsMap[displayLang];
-  const categoryLabels = categoryLabelsMap[displayLang];
 
   const uniqueCategories = Array.from(
     new Set(courses.map((c) => c.category))
-  ).sort();
+  )
+    .filter((category) => (documentCounts[category as Category] || 0) > 0)
+    .sort();
 
   const getCategoryLabel = (category: string): string => {
-    return categoryLabels[category as keyof typeof categoryLabels] || category;
+    const found = courses.find((c) => c.category === category);
+    if (!found) return category;
+    return displayLang === "en"
+      ? (found.category_en || category)
+      : (found.category_th || category);
   };
 
   const getSectionTitle = (key: string): string => {
@@ -281,7 +271,6 @@ export default function Sidebar({
           searchParams={searchParams}
           displayLang={displayLang}
           typeLabels={typeLabels}
-          categoryLabels={categoryLabels}
           uniqueCategories={uniqueCategories}
           documentCounts={documentCounts}
           selectedCategory={selectedCategory}
@@ -316,7 +305,6 @@ export default function Sidebar({
               searchParams={searchParams}
               displayLang={displayLang}
               typeLabels={typeLabels}
-              categoryLabels={categoryLabels}
               uniqueCategories={uniqueCategories}
               documentCounts={documentCounts}
               selectedCategory={selectedCategory}
