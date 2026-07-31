@@ -66,18 +66,11 @@ export async function getCourses(): Promise<Course[]> {
           program = "inter";
         }
 
-        // Map category: derive from category_th/category_en
-        let category: "economics" | "politics" | "law" | "philosophy" = "economics";
-        const catTh = (row.category_th || "").toLowerCase();
-        const catEn = (row.category_en || "").toLowerCase();
-
-        if (catTh.includes("รัฐศาสตร์") || catEn.includes("politics")) {
-          category = "politics";
-        } else if (catTh.includes("นิติศาสตร์") || catEn.includes("law")) {
-          category = "law";
-        } else if (catTh.includes("ปรัชญา") || catEn.includes("philosophy")) {
-          category = "philosophy";
-        }
+        // Map category: derive slug from category_en (e.g., "Globalization" -> "globalization")
+        const catEn = (row.category_en || "").trim();
+        const category = catEn
+          ? catEn.toLowerCase().replace(/\s+/g, "-")
+          : "economics";
 
         const course = {
           course_id: row.course_id,
@@ -98,6 +91,16 @@ export async function getCourses(): Promise<Course[]> {
         ...new Set(mapped.map((c) => c.category_th).filter(Boolean)),
       ]);
     }
+
+    // Debug: Log PD104_INT data
+    const pd104 = mapped.find((c) => c.course_id === "PD104_INT");
+    if (pd104) {
+      console.log("🔍 PD104_INT mapping:");
+      console.log("  category:", pd104.category);
+      console.log("  category_th:", pd104.category_th);
+      console.log("  category_en:", pd104.category_en);
+    }
+
     return mapped;
   } catch (error) {
     console.error("❌ Error loading courses:", error);
