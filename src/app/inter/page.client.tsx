@@ -166,6 +166,12 @@ export default function InterPageContent() {
     return <div className="flex-1 p-8">Loading...</div>;
   }
 
+  console.log("🎬 Inter page render:");
+  console.log("  filteredDocuments:", filteredDocuments.length);
+  console.log("  coursesWithFilteredDocs:", coursesWithFilteredDocs.length);
+  console.log("  searchResults:", searchResults.length);
+  console.log("  searchResults sample:", searchResults.slice(0, 2).map(c => ({ course_id: c.course_id, name_en: c.name_en })));
+
   return (
     <div className="flex flex-1">
       <Sidebar program={program} documentCounts={documentCounts} courses={programCourses} />
