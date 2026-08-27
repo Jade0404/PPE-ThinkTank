@@ -113,7 +113,11 @@ export default function InterPageContent() {
   // Get courses that have at least one filtered document
   const coursesWithFilteredDocs = useMemo(() => {
     const courseIds = new Set(filteredDocuments.map((d) => d.course_id));
-    return programCourses.filter((c) => courseIds.has(c.course_id));
+    console.log("  coursesWithFilteredDocs calculation:");
+    console.log("    courseIds from filteredDocuments:", Array.from(courseIds));
+    const result = programCourses.filter((c) => courseIds.has(c.course_id));
+    console.log("    resulting courses:", result.map(c => c.course_id));
+    return result;
   }, [filteredDocuments, programCourses]);
 
   const searchableCourses = useMemo(() => {
