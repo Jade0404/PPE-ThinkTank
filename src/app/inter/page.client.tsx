@@ -60,9 +60,10 @@ export default function InterPageContent() {
     let result = programDocuments;
 
     console.log("🔍 Inter filteredDocuments useMemo:");
+    console.log("  programDocuments count:", programDocuments.length);
+    console.log("  programDocuments sample types:", programDocuments.slice(0, 3).map(d => ({ doc_id: d.doc_id, type: d.type })));
+    console.log("  all unique types in programDocuments:", [...new Set(programDocuments.map(d => d.type))]);
     console.log("  selectedTypes:", selectedTypes);
-    console.log("  sample d.type:", programDocuments[0]?.type);
-    console.log("  filtered count so far:", result.length);
 
     if (selectedCategory !== "all") {
       const categoryCoursesIds = programCourses
@@ -75,9 +76,15 @@ export default function InterPageContent() {
 
     if (selectedTypes.length > 0) {
       const normalizedTypes = selectedTypes.map((t) => t.trim().toLowerCase());
-      result = result.filter((d) =>
-        normalizedTypes.includes((d.type || "").trim().toLowerCase())
-      );
+      console.log("  normalizedTypes:", normalizedTypes);
+      console.log("  before type filter:", result.length);
+      result = result.filter((d) => {
+        const docType = (d.type || "").trim().toLowerCase();
+        const matches = normalizedTypes.includes(docType);
+        if (!matches) console.log("    filtered out:", { doc_id: d.doc_id, type: d.type, normalized: docType });
+        return matches;
+      });
+      console.log("  after type filter:", result.length);
     }
 
     if (selectedYears.length > 0) {

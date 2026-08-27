@@ -3,7 +3,7 @@ export interface Course {
   name_th: string;
   name_en: string;
   program: "thai" | "inter";
-  category: "economics" | "politics" | "law" | "philosophy";
+  category: string;
   category_th: string;
   category_en: string;
 }
@@ -16,6 +16,7 @@ export interface Document {
   term: 1 | 2;
   title: string;
   drive_id: string;
+  author?: string;
 }
 
 export interface Book {
@@ -27,5 +28,5 @@ export interface Book {
 }
 
 export type Program = "thai" | "inter";
-export type Category = "economics" | "politics" | "law" | "philosophy" | "all";
+export type Category = string | "all";
 export type DocumentType = "sheet" | "summary" | "exam";

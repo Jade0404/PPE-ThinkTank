@@ -49,6 +49,12 @@ export default function DocumentCard({
           {course?.name_th || course?.name_en || "Unknown Course"}
         </p>
 
+        {document.author && (
+          <p className="text-sm text-gray-500 mb-3">
+            โดย {document.author}
+          </p>
+        )}
+
         <div className="flex gap-2">
           <Button
             onClick={() => setShowPreview(true)}
