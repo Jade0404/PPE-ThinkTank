@@ -1,18 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { getCourses, getDocuments } from "@/lib/sheets";
 import DocumentCard from "@/components/DocumentCard";
 
 export default function ThaiCoursePageContent() {
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const courseId = params.course_id as string;
 
   const [course, setCourse] = useState<any>(null);
-  const [documents, setDocuments] = useState<any[]>([]);
+  const [allDocuments, setAllDocuments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const selectedTypes = searchParams.getAll("type");
+  const selectedYears = searchParams.getAll("year");
+  const selectedTerms = searchParams.getAll("term");
 
   useEffect(() => {
     Promise.all([getCourses(), getDocuments()])
@@ -23,7 +28,7 @@ export default function ThaiCoursePageContent() {
         setCourse(foundCourse);
 
         const courseDocs = docs.filter((d) => d.course_id === courseId);
-        setDocuments(courseDocs);
+        setAllDocuments(courseDocs);
         setLoading(false);
       })
       .catch((err) => {
@@ -31,6 +36,32 @@ export default function ThaiCoursePageContent() {
         setLoading(false);
       });
   }, [courseId]);
+
+  // Apply filters from URL
+  const documents = useMemo(() => {
+    let result = allDocuments;
+
+    if (selectedTypes.length > 0) {
+      const normalizedTypes = selectedTypes.map((t) => t.trim().toLowerCase());
+      result = result.filter((d) =>
+        normalizedTypes.includes((d.type || "").trim().toLowerCase())
+      );
+    }
+
+    if (selectedYears.length > 0) {
+      result = result.filter((d) =>
+        selectedYears.includes(d.year.toString())
+      );
+    }
+
+    if (selectedTerms.length > 0) {
+      result = result.filter((d) =>
+        selectedTerms.includes(d.term.toString())
+      );
+    }
+
+    return result;
+  }, [allDocuments, selectedTypes, selectedYears, selectedTerms]);
 
   if (loading) {
     return <div className="flex-1 p-8">Loading...</div>;
