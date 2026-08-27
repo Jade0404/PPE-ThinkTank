@@ -41,11 +41,20 @@ export default function InterCoursePageContent() {
   const documents = useMemo(() => {
     let result = allDocuments;
 
+    console.log("🔍 Course detail filters (Inter):");
+    console.log("  selectedTypes:", selectedTypes);
+    console.log("  selectedYears:", selectedYears);
+    console.log("  selectedTerms:", selectedTerms);
+    console.log("  allDocuments:", allDocuments.length);
+
     if (selectedTypes.length > 0) {
       const normalizedTypes = selectedTypes.map((t) => t.trim().toLowerCase());
+      console.log("  normalizedTypes:", normalizedTypes);
+      console.log("  sample allDocuments types:", allDocuments.slice(0, 3).map(d => d.type));
       result = result.filter((d) =>
         normalizedTypes.includes((d.type || "").trim().toLowerCase())
       );
+      console.log("  after type filter:", result.length);
     }
 
     if (selectedYears.length > 0) {
@@ -60,6 +69,7 @@ export default function InterCoursePageContent() {
       );
     }
 
+    console.log("  final documents:", result.length);
     return result;
   }, [allDocuments, selectedTypes, selectedYears, selectedTerms]);
 
