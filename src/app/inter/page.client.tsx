@@ -230,7 +230,14 @@ export default function InterPageContent() {
                         return (
                           <button
                             key={course.course_id}
-                            onClick={() => router.push(`/inter/${course.course_id}`)}
+                            onClick={() => {
+                              const params = new URLSearchParams();
+                              selectedTypes.forEach(t => params.append('type', t));
+                              selectedYears.forEach(y => params.append('year', y));
+                              selectedTerms.forEach(t => params.append('term', t));
+                              const queryString = params.toString();
+                              router.push(`/inter/${course.course_id}${queryString ? '?' + queryString : ''}`);
+                            }}
                             className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 hover:shadow-lg transition-shadow hover:border-red-700 text-left"
                           >
                             <h3 className="font-sans font-semibold text-lg text-gray-900 mb-3">
