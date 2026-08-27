@@ -234,7 +234,7 @@ export default function ThaiPageContent() {
                     </h1>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                       {categoryCourses.map((course) => {
-                        const courseDocCount = programDocuments.filter(
+                        const courseDocCount = filteredDocuments.filter(
                           (d) => d.course_id === course.course_id
                         ).length;
                         return (
