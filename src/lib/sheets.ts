@@ -136,6 +136,7 @@ export async function getDocuments(): Promise<Document[]> {
         term: parseInt((row.term || "").toString().trim(), 10) as 1 | 2,
         title: row.title,
         drive_id: row.drive_id,
+        author: (row.author?.trim() || undefined) as string | undefined,
       }));
     console.log("✓ Documents loaded:", mapped.length, "documents");
     console.log("  All documents:", mapped);
